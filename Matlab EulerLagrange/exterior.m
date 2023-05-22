@@ -1,4 +1,9 @@
 function Ax = exterior(Av)
+%This function creates a skew symmetric matrix from a vector Av. It is used
+%for a cross product in matrix form. Due to complications that arise if Av 
+%is a `symfun`, special care is takes for that case.
+
+
 if isnumeric(Av)
 Ax = zeros(3);
 else

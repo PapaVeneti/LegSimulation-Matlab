@@ -28,17 +28,17 @@ s.customSimulationsSwitch(true);
 
 %% Pos test events
 %event 1:
-% PC.setTarget([0.1667;0.05;0.08]);
-% % PC.setAngleTarget([0;0;0])
-% s.setEvent(0,1,1);
-% 
-% % PC.setAngleTarget([1;1;1])
-% 
-% PC.setTarget([0.1667;0;0.0225]);
-% s.setEvent(1,1,1);
-% PC.setTarget([0.1667;0;0.022]);
-% s.setEvent(2,1,1);
-% 
+PC.setTarget([0.1667;0.05;0.08]);
+% PC.setAngleTarget([0;0;0])
+s.setEvent(0,1,1);
+
+% PC.setAngleTarget([1;1;1])
+
+PC.setTarget([0.1667;0;0.0225]);
+s.setEvent(1,1,1);
+PC.setTarget([0.1667;0;0.022]);
+s.setEvent(2,1,1);
+
 % % PC.setTarget([0.1667;0.2;0.08]);
 % PC.setAngleTarget([0;0;1])
 % s.setEvent(2,1,1);
@@ -85,15 +85,15 @@ s.customSimulationsSwitch(true);
 % 
 
 %% Effort Test:
-%event 1:
-PC.setTarget([0.1667;0.05;0.08]);
-s.setEvent(0,1,1);
-
-PC.setTarget([0.1667;0;0.0225]);
-s.setEvent(1,1,1);
-
-EC.setWrench([0,0,-100]);
-s.setEvent(2,3,1);
+% %event 1:
+% PC.setTarget([0.1667;0.05;0.08]);
+% s.setEvent(0,1,1);
+% 
+% PC.setTarget([0.1667;0;0.0225]);
+% s.setEvent(1,1,1);
+% 
+% EC.setWrench([0,0,-100]);
+% s.setEvent(2,3,1);
 
 
 %% Simscape Simulation

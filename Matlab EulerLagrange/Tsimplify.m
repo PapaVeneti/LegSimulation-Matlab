@@ -1,3 +1,5 @@
+%This scripts calculates the transformation matrices for the leg
+
 calcs = false;  
 % true if i want to double check c++ code, or get EOM
 % false to get the symbolic matrices for kinematics
@@ -13,7 +15,7 @@ if calcs
    L01 = 0.07763;
    L12 = 0.11208;
    L23 = 0.2531;
-   L3E = 0.2455;
+   L3E = 0.223;
    H = 0.4;
 else
     syms H LB0 L01 L12 L23 L3E real
@@ -55,9 +57,6 @@ T123  = simplify( T1*T2*T3 );
 T123E = simplify( T123*TE  );
 TWE   = simplify( TW*T123E );
 
-% if calcs
-%     FT = matlabFunction(TWE);
-% end
 
 
 

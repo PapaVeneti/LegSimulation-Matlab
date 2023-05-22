@@ -1,3 +1,4 @@
+% Validation for EL functions. 
 % Select the corespoding section and run the script to get the EOM in
 % matrix form. 
 

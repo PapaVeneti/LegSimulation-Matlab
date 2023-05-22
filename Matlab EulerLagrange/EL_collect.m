@@ -1,4 +1,17 @@
 function [B,C,G] = EL_collect(L_qt,L_q,states,N)
+% This functions collects the terms of the euler lagrange equations in
+% order to create the dynamics matrices. 
+%Input:
+%-L_qt as a `sumfun` : L_qt(states(t)),
+%-L_q as a `sumfun`  : L_q(states(t)),
+%-states as a `symfun` : states(t)
+%-Dofs
+%
+%Output: 
+%-Mass matrix as a `sym` matrix
+%-Coriolis and Centrifugal matrix as a `sym` matrix
+%-Gravity vector as a `sym` matrix
+
 syms T
 
 qs  = [eye(N) ,zeros(N)]* states; %angles

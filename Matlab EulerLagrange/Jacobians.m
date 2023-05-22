@@ -1,3 +1,6 @@
+%This script calculates the Jacobian matrix and finds the determinant from
+%which the singularities are found
+
 Tsimplify
 
 %% transformation data
@@ -44,7 +47,7 @@ detJv = simplify( det( Jv ));
 
 %% singularities deep dive
 L23 = 0.2531;
-L3E = 0.2455;
+L3E = 0.223;
 
 q2v = linspace(-pi,pi,25);
 q3a = q2v + asin( L3E/L23 * sin(q2v) );

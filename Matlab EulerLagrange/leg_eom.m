@@ -1,3 +1,7 @@
+%This script creates the dynamics matrices for the simulation of the leg.
+%It calculates the Lagrangian and then cals the EL_derivatives.m and
+%EL_collect.m functions to create the matrices. 
+
 syms q1t(t) q2t(t) q3t(t) ;
 assume(q1t(t),'real');
 assume(q2t(t),'real');
