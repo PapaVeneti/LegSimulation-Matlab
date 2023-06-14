@@ -273,7 +273,7 @@ classdef simulation_preparation < handle
             obj.PC.getControllerUpToDate(ts_sim(1));
             
             %2: Run simulation and save results:
-            [t_temp,y_temp] = ode15s( @(t,y) obj.PC.control_sim(t,y), ts_sim, obj.y(end,:)' ,obj.options);
+            [t_temp,y_temp] = ode45( @(t,y) obj.PC.control_sim(t,y), ts_sim, obj.y(end,:)' ,obj.options);
 
             obj.t = [obj.t ; t_temp(2:end)   ];
             obj.y = [obj.y ; y_temp(2:end,:) ];

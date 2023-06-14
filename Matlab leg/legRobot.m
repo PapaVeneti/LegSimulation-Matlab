@@ -192,6 +192,23 @@ classdef legRobot <robot
 
         end
 
+        %Transformation Matrix for End-effector from world frame:
+        function TWE = TransformationWE(obj)
+            %Get the transformation matrix from end_effector to world frame 
+            %Used in force verification
+
+            TWE = zeros(4,4);
+            Q1 = obj.q(1);
+            Q2 = obj.q(2);
+            Q3 = obj.q(3);
+            
+            TWE(1,:) = [-sin(Q2 + Q3)*sin(Q1), -cos(Q2 + Q3)*sin(Q1), cos(Q1), (1401*cos(Q1))/12500 - (223*sin(Q2 + Q3)*sin(Q1))/1000 - (2531*sin(Q1)*sin(Q2))/10000 + 1111/20000];
+            TWE(2,:) = [         cos(Q2 + Q3),         -sin(Q2 + Q3),       0,                                       (223*cos(Q2 + Q3))/1000 + (2531*cos(Q2))/10000 + 7763/100000];
+            TWE(3,:) = [ sin(Q2 + Q3)*cos(Q1),  cos(Q2 + Q3)*cos(Q1), sin(Q1),        (1401*sin(Q1))/12500 + (223*sin(Q2 + Q3)*cos(Q1))/1000 + (2531*cos(Q1)*sin(Q2))/10000 + 2/5];
+            TWE(4,:) = [0,0,0,1];
+
+        end
+        
         %Differential Kinematics Jv=Jr
         function calculateJv(obj)
             
@@ -236,11 +253,10 @@ classdef legRobot <robot
             obj.C(3,2) = (496303210401*Q2t*sin(Q3))/50000000000000;
             obj.C(3,3) = 0;
 
-
-            % G matrix
-            obj.G(1,1) = (1189884493827*cos(Q1))/1000000000000 + (387492057*sin(Q1))/100000000000 + (1956827187*cos(Q2)*sin(Q1))/500000000000 - (604164195783*sin(Q1)*sin(Q2))/500000000000 - (192364065351*cos(Q2)*sin(Q1)*sin(Q3))/500000000000 - (192364065351*cos(Q3)*sin(Q1)*sin(Q2))/500000000000;
-            obj.G(2,1) = (981*cos(Q1)*(196089771*cos(Q2 + Q3) + 379294469163607978^(1/2)*cos(Q2 - atan(1994727/615865643))))/500000000000;
-            obj.G(3,1) = (192364065351*cos(Q2 + Q3)*cos(Q1))/500000000000;
+            % G matrix: 9.8
+            obj.G(1,1) = (59433578183*cos(Q1))/50000000000 + (19354853*sin(Q1))/5000000000 + (97741623*cos(Q2)*sin(Q1))/25000000000 - (30177416507*sin(Q1)*sin(Q2))/25000000000 - (9608398779*cos(Q2)*sin(Q1)*sin(Q3))/25000000000 - (9608398779*cos(Q3)*sin(Q1)*sin(Q2))/25000000000;
+            obj.G(2,1) = (49*cos(Q1)*(196089771*cos(Q2 + Q3) + 379294469163607978^(1/2)*cos(Q2 - atan(1994727/615865643))))/25000000000;
+            obj.G(3,1) = (9608398779*cos(Q2 + Q3)*cos(Q1))/25000000000;
         end
         
         % --- General Distance ---:

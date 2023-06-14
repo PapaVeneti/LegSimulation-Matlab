@@ -84,6 +84,9 @@ classdef    TrajControl < handle
             %initial errors =0:
             obj.reset();
 
+            %create trajGen object
+            obj.TG = trajectoryGen(obj.R.q,obj.R.qt,0,1);
+
             %initial target -> Current position of robot
             obj.qr  = obj.R.q;
             obj.qtr = obj.R.qt;
@@ -117,18 +120,14 @@ classdef    TrajControl < handle
             % - Angular rotation of ellipse dth
             % - Period of trajectory
             % - Number of points to discretize the ellipse
-            % - Number of repetitions of the trajectory 
+            % - Number of repetitions of the trajectory
+            % - Starting time for the trajectory
 
             %the output starts from t=dt+tnow
             [X,tw] = obj.generateVerticalEllipse(a,b,DX,Dth,T,Npoints);
             
-            Xt = X; Tt = tw;
-            for i=1:(Times-1)
-                Xt = [Xt X];
-                Tt = [Tt, ( tw(end)*(i)+tw )];
-            end
+            obj.generateQ(X,tw,Tstart);
 
-            obj.generateQ(Xt,Tt,Tstart);
         end
         
         function generateQ(obj,x,twp,Tstart)
@@ -152,11 +151,16 @@ classdef    TrajControl < handle
 
             Npoints = length(twp);
             %% 1. Set timestamps
-            twp = [Tstart twp];                    %include current time
+            twp = [Tstart twp+Tstart];                    %include current time
             %% 2. Position WP:
-            qw = zeros(obj.R.dim, Npoints+1 ); %include current time
+            qw = zeros(obj.R.dim, Npoints+1 ); %include current time          
             qw(:,1) = obj.R.q; %initial point of trajectory is the current position
             
+            %if back to back trajectories
+            if obj.TG.t_wp(end) == Tstart
+                qw(:,1) = obj.TG.Q_wp(:,end);
+            end
+
             for i=1:Npoints
                 obj.R.IK(x(:,i)); %find possible solutions
 
@@ -344,7 +348,7 @@ classdef    TrajControl < handle
             
             %create trajectory gen object:
             obj.TG = trajectoryGen(qwp,qtwp,twp,obj.Ts);
-            
+
             %generate trajectory:
             switch obj.trajMethod
                 case 'cubic'
@@ -396,7 +400,7 @@ classdef    TrajControl < handle
             %  R = 0.4761
             %  r = 0.182839
 
-            X_000 = obj.R.DK_querry(0,0,0);
+            X_000 = obj.R.DK_querry(zeros(obj.R.dim,1));
 
             NumberOfPoints = Npoints;
             tw   = linspace(T/(NumberOfPoints-1),T,NumberOfPoints);

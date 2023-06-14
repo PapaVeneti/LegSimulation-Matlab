@@ -6,5 +6,6 @@ b = 0.06; %due to gravity
 
 Dxe  = 0.11208;
 Dye = 0.105;
+DX =[Dxe;Dye];
 
-dth = 0.0;
+Dth = 0.0;

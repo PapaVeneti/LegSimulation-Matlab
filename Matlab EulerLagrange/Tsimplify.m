@@ -1,6 +1,6 @@
 %This scripts calculates the transformation matrices for the leg
 
-calcs = false;  
+calcs = true;  
 % true if i want to double check c++ code, or get EOM
 % false to get the symbolic matrices for kinematics
 

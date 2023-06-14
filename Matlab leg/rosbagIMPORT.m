@@ -11,12 +11,16 @@ if JointStates
 % t_offset =-0.0035; %kp10kd1ki1
 
 DATA1 = readtable('rosBags/ForceNewJS.txt');
+% DATA1 = readtable('rosBags/legKp10Kd1_qd000_JS_new.txt');
 t_offset = 1.33155;%+0.01945; %ForceJS
 t_offset = 2.488+0.221; %ForceNewJS
+% t_offset = -5e-3;
+% t_offset = +0.004; %simpleEffortTest_JS
 
 tbag = DATA1.x_time; tbag = (tbag-tbag(1))*1e-9; %ns to s
 tbag = tbag - t_offset; % offset time
 t1bag= tbag;t2bag= tbag;t3bag= tbag;
+tu1bag= tbag;tu2bag= tbag;tu3bag= tbag;
 
 q1bag = DATA1.field_position0;
 w1bag = DATA1.field_velocity0;
@@ -75,7 +79,7 @@ DATA1 = readtable('rosBags/legTrajKp10Kd1.txt');
 DATA2 = readtable('rosBags/legTrajKp10Kd1JS.txt');
 
 t_offset =-0.; %kp10kd1ki1
-tu_offset =0.007;
+tu_offset =0.0065;
 
 
 tbag = DATA1.x_time; tbag = (tbag-tbag(1))*1e-9; %ns to s
@@ -115,10 +119,13 @@ end
 %% contact 
 if contact
 
-DATA2 = readtable('rosBags/ForceCF.txt');
+DATA2 = readtable('rosBags/ForceNewCF.txt');
 tc_offset =1.33155;%+0.01945; %kp10kd1ki1
 tc_offset =1.33155;%+0.46845; %kp10kd1ki1 %ForceJS
 tc_offset = 1.7800+0.02; %ForceNewJS
+tc_offset = +0.004; %simpleEffortTest_CF
+tc_offset =3.159 - 0.013 - 0.011 ; %3.159; %ForceNewCF
+
 
 tcbag = DATA2.x_time; tcbag = (tcbag-tcbag(1))*1e-9; %ns to s
 tcbag = tcbag - tc_offset; % offset time

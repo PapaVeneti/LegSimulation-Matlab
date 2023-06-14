@@ -2,7 +2,7 @@ clear all;
 close all;
 clc;
 
-%% 
+%% Simulation Parameters:
 %sampling time:
 Tsampling = 1e-3;
 
@@ -14,8 +14,13 @@ Ki = 0*[1;1;1];
 %HLC and LLC parameters
 K = [Kp,Kd,Ki];
 
-%% 
+%% Initialize simulation handler
+%Set initial conditions
+% qinitial=[-0.0025;-1.1899;-1.2599]; %for static test
+qinitial=[0;0;0];
+
 r= legRobot(tmax=1.007344*[7;10;10],ground=true);
+r.q = qinitial';
 
 PC = PosControl(r,Tsampling,K); %Position Controller
 TC = TrajControl(r,Tsampling,K); %Trajectory Controller
@@ -23,69 +28,49 @@ EC = EffortControl(r,Tsampling); %Effort Controller
 
 % simulation_preparation
 s = simulation_preparation(r,PC,TC,EC);
-s.setInitialConditions([0;0;0;0;0;0],0);
+s.setInitialConditions([qinitial;0;0;0],0);
+
+%!! turn on for custom simulation:
 s.customSimulationsSwitch(true);
 
-%% Pos test events
-%event 1:
-PC.setTarget([0.1667;0.05;0.08]);
-% PC.setAngleTarget([0;0;0])
-s.setEvent(0,1,1);
-
-% PC.setAngleTarget([1;1;1])
-
-PC.setTarget([0.1667;0;0.0225]);
-s.setEvent(1,1,1);
-PC.setTarget([0.1667;0;0.022]);
-s.setEvent(2,1,1);
-
-% % PC.setTarget([0.1667;0.2;0.08]);
-% PC.setAngleTarget([0;0;1])
-% s.setEvent(2,1,1);
-% PC.setTarget([0.1667;0;0.08]);
-% s.setEvent(3,1,1);
+%% Position Controller test events (Uncomment for test 1)
+% PC.setTarget([0.1667;0.05;0.08]);
+% s.setEvent(0,1,1);
 % PC.setTarget([0.1667;0;0.0225]);
-% s.setEvent(4,1,1);
+% s.setEvent(1,1,1);
+% PC.setTarget([0.1667;0;0.022]);
+% s.setEvent(2,1,1);
 
-%% traj  test events
-% testXpos2
+
+%% Trajectory Controller test events (Uncomment for  test 2)
+% testXpos
 % TC.generateQ(x,tw,0);
 % s.setEvent(0,2,tw(end));
-% % 
-% TC.generateQ(x,tw+tw(end),tw(end));
-% s.setEvent(tw(end),2,tw(end));
 
-%% Pos - Traj events:
+%% Elliptical Trajectory test events (Uncomment for  test 3)
+% eclipse_par
+% TC.generateEllipse(a,b,DX,Dth,5,30,1,0);
+% s.setEvent(0,2,5);
+
+
+
+%% Pos - Traj events: (Uncomment for  test 4)
 % PC.setTarget([0.1667;0.3;0.5]);
 % s.setEvent(0,1,1);
 % 
 % testXpos
-% TC.generateQ(x,tw+1,1);
+% TC.generateQ(x,tw,1);
 % s.setEvent(1,2,tw(end));
 % 
 % PC.setTarget([0.1667;0.3;0.5]);
 % s.setEvent(6,1,1);
-% 
-% testXpos
-% TC.generateQ(x,tw+7,7);
-% s.setEvent(7,2,tw(end));
 
+%% Effort Test: (Uncomment for  test 5, set right initial conditions above)
 
+% EC.setWrench([0,0,-100]);
+% s.setEvent(0,3,1);
 
-% PC.setTarget([0.1667;0;0.08]);
-% s.setEvent(2,1,1);
-% PC.setAngleTarget([0;0;0.0]);
-% s.setEvent(3,1,1);
-% 
-% 
-% testXpos
-% TC.generateQ(x,tw+4,4);
-% s.setEvent(4,2,tw(end));
-% % 
-% 
-
-%% Effort Test:
-% %event 1:
+%% Combined Effort Test (Uncomment for  test 6):
 % PC.setTarget([0.1667;0.05;0.08]);
 % s.setEvent(0,1,1);
 % 
@@ -141,10 +126,11 @@ u1v = u(:,1);
 u2v = u(:,2);
 u3v = u(:,3);
 
-%% RosBag
-rosbagIMPORT;
+%% RosBag import (This is used for comparisons, but is deactivated)
+close all;
+% rosbagIMPORT;
 
-Simulation_type = 'pos';
-ts_sim = [0 t(end)];
+Simulation_type = 'Default'; %traj for gazebo - matlab reference traj. 
+ts_sim = [0 s.t_total];
 
 Leg_plot

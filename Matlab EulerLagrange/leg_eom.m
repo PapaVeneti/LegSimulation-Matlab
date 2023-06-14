@@ -105,7 +105,7 @@ TK3 = 1/2*m3*(uc3.') * uc3 + 1/2*(w3.')*R3 *I3 * (R3.') *w3; TK3 = simplify(TK3)
 TK = TK1+TK2+TK3; TK = simplify(TK);
 
 %% Potential Energy
-g = 9.81;
+g = 9.8;
 
 U = [g,0,0]*( m1*xc1 + m2*xc2+ m3*xc3);
 
