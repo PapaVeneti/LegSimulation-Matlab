@@ -162,8 +162,9 @@ classdef simulation_preparation < handle
                 if size(yo) ~= [obj.R.dim,1]
                     error("[simulation_preparation]: Wrong initial conditions dimensions")
                 end
+                obj.R.q    = yo ;
                 obj.y(1,:) = yo';
-                obj.t = to;
+                obj.t      = to;
             end
             obj.u = zeros(1,obj.R.dim); 
         

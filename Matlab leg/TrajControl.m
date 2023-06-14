@@ -93,7 +93,7 @@ classdef    TrajControl < handle
             
         end
       
-        function generateEllipse(obj,a,b,DX,Dth,T,Npoints,Times,Tstart)
+        function generateEllipse(obj,a,b,DX,Dth,T,Npoints,Tstart)
             arguments
                 obj TrajControl
                 a  (1,1) double
@@ -102,7 +102,6 @@ classdef    TrajControl < handle
                 Dth (1,1) double
                 T   (1,1) double {mustBePositive}
                 Npoints  (1,1) double {mustBePositive}
-                Times (1,1) double {mustBePositive}
                 Tstart (1,1) double {mustBeNonnegative}
     
             end

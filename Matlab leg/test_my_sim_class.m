@@ -18,9 +18,7 @@ K = [Kp,Kd,Ki];
 %Set initial conditions
 % qinitial=[-0.0025;-1.1899;-1.2599]; %for static test
 qinitial=[0;0;0];
-
 r= legRobot(tmax=1.007344*[7;10;10],ground=true);
-r.q = qinitial';
 
 PC = PosControl(r,Tsampling,K); %Position Controller
 TC = TrajControl(r,Tsampling,K); %Trajectory Controller
@@ -49,7 +47,7 @@ s.customSimulationsSwitch(true);
 
 %% Elliptical Trajectory test events (Uncomment for  test 3)
 % eclipse_par
-% TC.generateEllipse(a,b,DX,Dth,5,30,1,0);
+% TC.generateEllipse(a,b,DX,Dth,5,30,0);
 % s.setEvent(0,2,5);
 
 
