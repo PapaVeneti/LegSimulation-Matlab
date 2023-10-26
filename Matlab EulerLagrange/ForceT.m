@@ -1,4 +1,4 @@
-
+%this code is used for calculation verification
 
 Tsimplify
 
@@ -7,7 +7,12 @@ qq = [-0.11362458087418936, -1.182736210249276, -1.3141185459199907];
 tt =[-0.7019779265105621, 0.6245049675194781, 1.5792841881873734];
 hh = [2.4251060485839844, 1.2156858444213867, 11.37186050415039];
 hh = [0.4337301552295685, 0.34810179471969604, 9.080540657043457]; %no gravity
- 
+
+%simulink :
+qq = [q1v(end);q2v(end);q3v(end)];
+tt = [u1v(end);u2v(end);u3v(end)];
+hh = [F(2,end);F(3,end);F(4,end)];
+
 syms Q1 Q2 Q3
 TWEs = subs(TWE,[q1,q2,q3],[Q1,Q2,Q3]);
 FT =matlabFunction(TWEs(100000000000)) 
@@ -64,4 +69,10 @@ JVtip = subs(JvW,[q1,q2,q3],[Q1,Q2,Q3]);
 FJVtip =matlabFunction(JVtip); 
 JVtip_q = FJVtip(qq(1),qq(2),qq(3));
 
-t_exp  = (JVtip_q') * (hh')
+
+r = legRobot;
+r.q = qq;
+r.MCG;
+
+% t_exp  = (JVtip_q') * (hh)
+h_exp  = (JVtip_q') \ (tt - r.G)
